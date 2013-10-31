@@ -1,5 +1,6 @@
 class razor::torquebox {
   $user = 'razor-server'
+  $dest = '/opt/razor-torquebox'  # Must be the same as in the packaging
 
   package { "torquebox":
     ensure => latest
