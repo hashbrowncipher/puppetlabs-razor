@@ -1,9 +1,12 @@
-class razor::torquebox {
+class razor::torquebox(
+  $package_name   = 'torquebox',
+  $package_ensure = 'latest',
+) {
   $user = 'razor-server'
   $dest = '/opt/razor-torquebox'  # Must be the same as in the packaging
 
-  package { "torquebox":
-    ensure => latest
+  package { $package_name:
+    ensure => $package_ensure,
   } ->
 
   # Install an init script for the Razor torquebox install
