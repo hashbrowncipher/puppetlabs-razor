@@ -22,7 +22,7 @@ class razor::torquebox(
   file { "/opt/razor-torquebox/jboss/standalone":
     ensure  => directory, owner => $user, group => $user,
     recurse => true, checksum => none,
-    require => Package[torquebox],
+    require => Package[$package_name],
   } ->
 
   service { "razor-server":
