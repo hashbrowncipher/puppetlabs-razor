@@ -17,7 +17,7 @@
 class razor (
   $servername   = $fqdn,
   $libarchive   = undef,
-  $tftp         = true,
+  $tftp         = false,
   $java_package = undef
 ) {
   # Ensure libarchive is installed -- the users requested custom version, or
