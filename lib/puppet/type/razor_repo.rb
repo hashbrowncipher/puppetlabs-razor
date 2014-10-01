@@ -20,4 +20,8 @@ Puppet::Type.newtype(:razor_repo) do
     newvalues(true, false)
   end
 
+  newproperty(:task) do
+    desc "The task associated with this repo"
+  end
+
 end

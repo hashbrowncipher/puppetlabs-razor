@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'http'))
 Puppet::Type.type(:razor_repo).provide(:http, :parent => Puppet::Provider::RazorHttpClient) do
 
   def self.properties
-    ["url"]
+    ["url", "task"]
   end
 
   def self.razor_type
@@ -25,8 +25,14 @@ Puppet::Type.type(:razor_repo).provide(:http, :parent => Puppet::Provider::Razor
     url_key = resource[:iso] == :true ? "iso-url" : "url"
     {
       :name         => resource[:name],
-      :"#{url_key}" => resource[:url]
+      :"#{url_key}" => resource[:url],
+      :task         => resource[:task],
     }
+  end
+
+  def task
+    inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
+    inst["task"]["name"]
   end
 
   # We have to override the default URL getter because of the fact that URL

@@ -18,12 +18,12 @@ Puppet::Type.newtype(:razor_policy) do
 
   newproperty(:enabled) do
     desc "Whether or not the policy is enabled."
-    defaultto true
-    newvalues(true, false)
+    defaultto :true
+    newvalues(:true, :false)
   end
 
-  newproperty(:installer) do
-    desc "The name of the installer this policy should use."
+  newproperty(:task) do
+    desc "The name of the task this policy should use."
 
     munge do |value|
       if value.is_a?(String)
@@ -57,14 +57,7 @@ Puppet::Type.newtype(:razor_policy) do
   newproperty(:max_count) do
     desc "The maximum number of machines that should be imaged using this policy"
     munge do |value|
-      value.to_s
-    end
-  end
-
-  newproperty(:rule_number) do
-    desc "The precedence this policy should take when overlapping with other policies."
-    munge do |value|
-      value.to_s
+      value.to_i
     end
   end
 
@@ -72,4 +65,7 @@ Puppet::Type.newtype(:razor_policy) do
     desc "An array of the tags that should be used for matching this policy."
   end
 
+  newproperty(:node_metadata) do
+    desc "Metadata that will be merged with the node information."
+  end
 end
