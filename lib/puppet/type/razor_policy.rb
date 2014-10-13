@@ -57,7 +57,11 @@ Puppet::Type.newtype(:razor_policy) do
   newproperty(:max_count) do
     desc "The maximum number of machines that should be imaged using this policy"
     munge do |value|
-      value.to_i
+      if value.nil?
+        Nil
+      else
+        value.to_i
+      end
     end
   end
 
