@@ -15,6 +15,9 @@ Puppet::Type.type(:razor_policy).provide(:http, :parent => Puppet::Provider::Raz
 
   def format_create_params
     params = default_create_params
+    if params[:max_count].nil?
+        params.delete(:max_count)
+    end
     params[:hostname] = params.delete(:hostname_pattern)
     params[:enabled] = params[:enabled] == :true
     params
