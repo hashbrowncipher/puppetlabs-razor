@@ -16,4 +16,12 @@ Puppet::Type.type(:razor_tag).provide(:http, :parent => Puppet::Provider::RazorH
     inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
     inst["rule"]
   end
+
+  def rule=(new_rule)
+    self.class.http_post("/api/commands/update-tag-rule", {
+      :name => resource[:name],
+      :rule => new_rule,
+      :force => true
+    })
+  end
 end
