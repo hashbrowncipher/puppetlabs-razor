@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'http'))
 Puppet::Type.type(:razor_policy).provide(:http, :parent => Puppet::Provider::RazorHttpClient) do
 
   def self.properties
-    ["enabled", "repo", "installer", "broker", "hostname_pattern", "root_password", "max_count", "rule_number", "tags"]
+    ["enabled", "repo", "task", "broker", "hostname_pattern", "root_password", "max_count", "tags", "node_metadata"]
   end
 
   def self.razor_type
@@ -15,6 +15,9 @@ Puppet::Type.type(:razor_policy).provide(:http, :parent => Puppet::Provider::Raz
 
   def format_create_params
     params = default_create_params
+    if params[:max_count].nil?
+        params.delete(:max_count)
+    end
     params[:hostname] = params.delete(:hostname_pattern)
     params[:enabled] = params[:enabled] == :true
     params
@@ -27,7 +30,11 @@ Puppet::Type.type(:razor_policy).provide(:http, :parent => Puppet::Provider::Raz
 
   def enabled
     inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
-    inst["enabled"]
+    if inst["enabled"]
+      :true
+    else
+      :false
+    end
   end
 
   def enabled=(value)
@@ -48,9 +55,14 @@ Puppet::Type.type(:razor_policy).provide(:http, :parent => Puppet::Provider::Raz
     inst["configuration"]["root_password"]
   end
 
-  def installer
+  def task
     inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
-    { "name" => inst["installer"]["name"] }
+    { "name" => inst["task"]["name"] }
+  end
+
+  def tags
+    inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
+    inst["tags"].map { |tag| tag['name'] }
   end
 
   def repo
