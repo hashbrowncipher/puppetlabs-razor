@@ -47,14 +47,13 @@ class Puppet::Provider::RazorHttpClient < Puppet::Provider
   end
 
   def exists?
-    self.class.collection_has?("#{self.class.type_plural}", resource[:name])
+    @property_hash[:ensure] == :present
   end
 
   def self.instances
-    insts = self.collection_list("#{self.class.type_plural}")
-    insts.collect do |instance|
-      instance_name = instance["name"]
-      instance_details = self.collection_get("#{self.class.type_plural}", instance)
+    insts = self.collection_list("#{self.type_plural}")
+    insts['items'].collect do |instance|
+      instance_details = self.collection_get("#{self.type_plural}", instance["name"])
       hash_params = self.format_hash_params(instance_details)
       new(hash_params)
     end
@@ -145,7 +144,7 @@ class Puppet::Provider::RazorHttpClient < Puppet::Provider
   end
 
   def self.post_failure(path, status_code, body, ident=nil)
-    activity = ident ? "retrieving #{self.class.razor_type} #{ident}" : "contacting razor server"
+    activity = ident ? "retrieving #{self.razor_type} #{ident}" : "contacting razor server"
     fail("Unexpected response #{activity}: from #{path} #{status_code} #{body}")
   end
 

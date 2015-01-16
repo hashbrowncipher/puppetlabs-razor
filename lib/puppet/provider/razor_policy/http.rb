@@ -24,12 +24,12 @@ Puppet::Type.type(:razor_policy).provide(:http, :parent => Puppet::Provider::Raz
   end
 
   def broker
-    inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
+    inst = self.class.collection_get("#{self.type_plural}", resource[:name])
     { "name" => inst["broker"]["name"] }
   end
 
   def enabled
-    inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
+    inst = self.class.collection_get("#{self.type_plural}", resource[:name])
     if inst["enabled"]
       :true
     else

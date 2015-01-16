@@ -8,10 +8,6 @@ Puppet::Type.type(:razor_tag).provide(:http, :parent => Puppet::Provider::RazorH
     "tag"
   end
 
-  def self.type_plural
-    "tags"
-  end
-
   def rule
     inst = self.class.collection_get("#{self.class.type_plural}", resource[:name])
     inst["rule"]
